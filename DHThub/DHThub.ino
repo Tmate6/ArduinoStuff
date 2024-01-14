@@ -2,13 +2,12 @@
 #include <DHT.h>
 
 #define Type DHT11
-
-int senspin = 15;
-
-float humidity;
-float temp;
+byte senspin = 15;
 
 DHT HT(senspin, Type);
+
+// Light
+byte lightPin = A0;
 
 // Wifi
 #include <Arduino.h>
@@ -24,20 +23,21 @@ char buffer[250];
 
 void handlePost() {
   Serial.println("Request recieved");
-  Serial.println("Reading sensor");
   
-  humidity = HT.readHumidity();
-  temp = HT.readTemperature();
+  server.send(200, "application/json", String("{\"Temp\": " + String(HT.readTemperature()) + ", \"Humidity\": " + String(HT.readHumidity()) + ", \"Light\": " + String(analogRead(lightPin)) + "}"));
   
-  server.send(200, "application/json", String("{\"Temp\": " + String(temp) + ", \"Humidity\": " + String(humidity) + "}"));
+  Serial.println("Request sent");
 }
 
 void setup() {
   Serial.begin(115200);
 
-  Serial.println("\nStarting sensor");
+  Serial.println("\nStarting DHT");
   HT.begin();
 
+  Serial.println("\nSetting up Photoresistor");
+  pinMode(lightPin, INPUT);
+  
   Serial.print("Connecting to wifi");
   WiFi.begin("ARRIS-25DF", "1D56D9B1FD31E39C");
   
