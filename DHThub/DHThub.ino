@@ -10,16 +10,10 @@ DHT HT(senspin, Type);
 byte lightPin = A0;
 
 // Wifi
-#include <Arduino.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266WiFi.h>
-#include <WiFiClient.h>
-#include <ArduinoJson.h>
 
 ESP8266WebServer server(80);
- 
-StaticJsonDocument<250> jsonDocument;
-char buffer[250];
 
 void handlePost() {
   Serial.println("Request recieved");
