@@ -1,2 +1,2 @@
 # ArduinoStuff
-Random arduino projects/snipptes
+Random arduino projects/snippets
